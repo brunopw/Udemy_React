@@ -5,9 +5,11 @@ import {
   StyleSheet,
   Text,
   Button,
-  Image,
   View
 } from 'react-native';
+
+import Topo from './src/components/topo';
+import Icone from './src/components/icone';
 
 class app3 extends Component {
 
@@ -21,95 +23,77 @@ class app3 extends Component {
     };
   }
 
-  jokenpo(escolhaUsuarioParametro) {
+  jokenpo(escolhaUsuario) {
+    const numAleatorio = Math.floor(Math.random() * 3);
 
-    let numAleatorio = Math.floor(Math.random() * 3);
-
-    let escolhaComputadorVariavel = '';
+    let escolhaComputador = '';
 
     switch (numAleatorio) {
-      case 0: escolhaComputadorVariavel = 'PEDRA'; break;
-      case 1: escolhaComputadorVariavel = 'PAPEL'; break;
-      case 2: escolhaComputadorVariavel = 'TESOURA'; break;
-    };
+      case 0: escolhaComputador = 'PEDRA'; break;
+      case 1: escolhaComputador = 'PAPEL'; break;
+      case 2: escolhaComputador = 'TESOURA'; break;
+      default: escolhaComputador = '';
+    }
 
-    let resultadoVariavel = '';
+    let resultado = '';
 
-    if (escolhaComputadorVariavel == 'PEDRA') {
-      if (escolhaUsuarioParametro == 'PEDRA') {
-        resultadoVariavel = 'Empate!';
-      } else if (escolhaUsuarioParametro == 'PAPEL') {
-        resultadoVariavel = 'Você Ganhou!';
+    if (escolhaComputador === 'PEDRA') {
+      if (escolhaUsuario === 'PEDRA') {
+        resultado = 'Empate!';
+      } else if (escolhaUsuario === 'PAPEL') {
+        resultado = 'Você Ganhou!';
       } else {
-        resultadoVariavel = 'O computador ganhou :(';
+        resultado = 'Você perdeu :(';
       }
-    } else if (escolhaComputadorVariavel == 'PAPEL') {
-      if (escolhaUsuarioParametro == 'PEDRA') {
-        resultadoVariavel = 'O computador ganhou :(';
-      } else if (escolhaUsuarioParametro == 'PAPEL') {
-        resultadoVariavel = 'Empate!';
+    } else if (escolhaComputador === 'PAPEL') {
+      if (escolhaUsuario === 'PEDRA') {
+        resultado = 'Você perdeu :(';
+      } else if (escolhaUsuario === 'PAPEL') {
+        resultado = 'Empate!';
       } else {
-        resultadoVariavel = 'Você Ganhou!';
+        resultado = 'Você Ganhou!';
       }
-    } else if (escolhaComputadorVariavel == 'TESOURA') {
-      if (escolhaUsuarioParametro == 'PEDRA') {
-        resultadoVariavel = 'Você Ganhou!';
-      } else if (escolhaUsuarioParametro == 'PAPEL') {
-        resultadoVariavel = 'O computador ganhou :(';
+    } else if (escolhaComputador === 'TESOURA') {
+      if (escolhaUsuario === 'PEDRA') {
+        resultado = 'Você Ganhou!';
+      } else if (escolhaUsuario === 'PAPEL') {
+        resultado = 'Você perdeu :(';
       } else {
-        resultadoVariavel = 'Empate!';
+        resultado = 'Empate!';
       }
     }
 
-    this.setState({
-      escolhaUsuario: escolhaUsuarioParametro,
-      escolhaComputador: escolhaComputadorVariavel,
-      resultado: resultadoVariavel
-    });
+    this.setState({ escolhaUsuario, escolhaComputador, resultado });
   }
 
   render() {
     return (
       <View>
 
-        <Topo></Topo>
+        <Topo />
 
         <View style={styles.painelAcoes}>
           <View style={styles.btnEscolha}>
-            <Button title="pedra" onPress={() => { this.jokenpo('PEDRA') }} />
+            <Button title="pedra" onPress={() => { this.jokenpo('PEDRA'); }} />
           </View>
 
           <View style={styles.btnEscolha}>
-            <Button title="papel" onPress={() => { this.jokenpo('PAPEL') }} />
+            <Button title="papel" onPress={() => { this.jokenpo('PAPEL'); }} />
           </View>
 
           <View style={styles.btnEscolha}>
-            <Button title="tesoura" onPress={() => { this.jokenpo('TESOURA') }} />
+            <Button title="tesoura" onPress={() => { this.jokenpo('TESOURA'); }} />
           </View>
         </View>
 
         <View style={styles.palco}>
           <Text style={styles.txtResultado}> {this.state.resultado} </Text>
-
-          <Text> Escolha do computador: {this.state.escolhaComputador} </Text>
-          <Image source={require('./imgs/tesoura.png')}/>
-
-          <Text> Escolha do usuário: {this.state.escolhaUsuario} </Text>
-          <Image source={require('./imgs/tesoura.png')}/>
+          <Icone escolha={this.state.escolhaComputador} jogador='Computador' />
+          <Icone escolha={this.state.escolhaUsuario} jogador='Você' />
         </View>
 
       </View>
 
-    );
-  }
-}
-
-class Topo extends Component {
-  render() {
-    return (
-      <View>
-        <Image source={require('./imgs/jokenpo.png')} />
-      </View>
     );
   }
 }
